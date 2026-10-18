@@ -3,150 +3,211 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Eel Run – Free Browser Snake Game</title>
-<meta name="description" content="Guide the eel, eat the pearls, avoid your own tail. A free snake-style game that plays on phone and desktop.">
-
-<!-- 1) AdSense: replace ca-pub-XXXXXXXXXXXXXXXX with your publisher ID (after approval) -->
+<title>Diwali Crackers Simulator – Free Online Fireworks Game</title>
+<meta name="description" content="Light virtual Diwali crackers online: rockets, anar, chakra, sparklers and bombs with real sound and physics. Free, no smoke, works on mobile.">
+<!-- Replace ca-pub-XXXXXXXXXXXXXXXX with your AdSense publisher ID after approval -->
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script>
-
 <style>
-:root{--sea:#12304a;--deep:#0b1f33;--foam:#e8f1f2;--pearl:#f6d776;--eel:#5ad1c4;--mute:#8fb0c4}
+:root{--ink:#0a0b1e;--card:#171638;--gold:#ffc65c;--amber:#ff8a2a;--text:#f3ecd8;--mute:#a9a6c4}
 *{box-sizing:border-box}
-html,body{margin:0;background:var(--sea);color:var(--foam);font-family:"Trebuchet MS","Segoe UI",sans-serif}
-body{min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:12px 12px 32px;touch-action:manipulation}
-h1{font-family:Georgia,"Times New Roman",serif;font-weight:700;font-size:2rem;margin:4px 0 2px;letter-spacing:.5px}
-.sub{color:var(--mute);margin:0 0 10px;font-size:.95rem}
-.ad{width:100%;max-width:728px;min-height:90px;margin:10px 0;text-align:center}
-.bar{display:flex;gap:18px;font-size:1.05rem;margin-bottom:8px}
-.bar b{color:var(--pearl)}
-.wrap{position:relative;width:min(92vw,440px);aspect-ratio:1}
-canvas{width:100%;height:100%;display:block;background:var(--deep);border-radius:14px;border:2px solid #24506f}
-.overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;background:rgba(11,31,51,.82);border-radius:14px;text-align:center;padding:16px}
-.overlay.hide{display:none}
-button{font:inherit;cursor:pointer;border:0;border-radius:10px;padding:10px 22px;background:var(--pearl);color:#2a2208;font-weight:700}
-button:focus-visible{outline:3px solid var(--foam);outline-offset:2px}
-.pad{display:grid;grid-template-columns:repeat(3,60px);grid-template-rows:repeat(2,52px);gap:6px;margin-top:12px}
-.pad button{padding:0;background:#1f4766;color:var(--foam);font-size:1.3rem}
-.pad .u{grid-column:2}.pad .l{grid-column:1;grid-row:2}.pad .d{grid-column:2;grid-row:2}.pad .r{grid-column:3;grid-row:2}
-@media (hover:hover) and (pointer:fine){.pad{display:none}}
-article{max-width:680px;color:var(--mute);line-height:1.6;margin-top:18px;font-size:.95rem}
-article h2{color:var(--foam);font-family:Georgia,serif;font-size:1.2rem}
-footer{margin-top:20px;font-size:.85rem;color:var(--mute)}
-footer a{color:var(--foam)}
+html,body{margin:0;background:var(--ink);color:var(--text);font-family:"Trebuchet MS","Segoe UI",sans-serif}
+body{display:flex;flex-direction:column;align-items:center;padding:10px 10px 30px}
+h1{font-family:Georgia,"Palatino Linotype",serif;font-size:clamp(1.5rem,5vw,2.3rem);margin:6px 0 2px;color:var(--gold);text-align:center}
+.sub{margin:0 0 8px;color:var(--mute);text-align:center}
+.ad{width:100%;max-width:900px;min-height:90px;margin:8px 0;text-align:center}
+.top{width:100%;max-width:900px;display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:6px;font-size:.95rem}
+.top b{color:var(--gold)}
+#stage{position:relative;width:100%;max-width:900px;height:clamp(340px,62vh,560px);border-radius:14px;overflow:hidden;touch-action:none;cursor:crosshair;border:1px solid #2c2a5c}
+#stage canvas{position:absolute;inset:0;width:100%;height:100%}
+#hint{position:absolute;left:0;right:0;top:14px;text-align:center;font-size:.95rem;color:var(--text);pointer-events:none;text-shadow:0 1px 6px #000}
+.tools{width:100%;max-width:900px;display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:10px}
+button{font:inherit;cursor:pointer;border:1px solid #38356f;border-radius:10px;background:var(--card);color:var(--text);padding:9px 14px}
+button[aria-pressed=true]{background:var(--amber);border-color:var(--amber);color:#2a1300;font-weight:700}
+button:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.sec{background:#221f4a;border-color:#4a4690}
+article{max-width:700px;color:var(--mute);line-height:1.65;margin-top:18px;font-size:.96rem}
+article h2{font-family:Georgia,serif;color:var(--text);font-size:1.2rem;margin:20px 0 6px}
+footer{margin-top:20px;font-size:.85rem;color:var(--mute)}footer a{color:var(--text)}
 </style>
 </head>
 <body>
-<h1>Eel Run</h1>
-<p class="sub">Eat pearls. Don’t bite your tail.</p>
+<h1>Diwali Crackers Simulator</h1>
+<p class="sub">Light rockets, anar, chakra, sparklers and bombs. No smoke, no noise for pets.</p>
 
-<!-- 2) Top banner slot: replace data-ad-slot with your own ad unit ID -->
 <div class="ad"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-XXXXXXXXXXXXXXXX" data-ad-slot="1111111111" data-ad-format="auto" data-full-width-responsive="true"></ins></div>
 
-<div class="bar"><span>Score <b id="score">0</b></span><span>Best <b id="best">0</b></span><button id="pause" style="padding:2px 12px">Pause</button></div>
+<div class="top"><span>Crackers lit <b id="lit">0</b></span><span>Rank <b id="rank">Beginner</b></span></div>
 
-<div class="wrap">
-  <canvas id="c" width="440" height="440" aria-label="Eel Run game board"></canvas>
-  <div class="overlay" id="ov">
-    <h2 id="ovT" style="margin:0;font-family:Georgia,serif">Ready?</h2>
-    <p id="ovP" style="margin:0;color:var(--mute)">Arrow keys, WASD or swipe to steer.</p>
-    <button id="go">Start game</button>
-  </div>
+<div id="stage">
+  <canvas id="bg"></canvas><canvas id="fx"></canvas>
+  <div id="hint">Pick a cracker below, then tap the sky or the ground.</div>
 </div>
 
-<div class="pad" aria-label="Touch controls">
-  <button class="u" data-d="U" aria-label="Up">▲</button>
-  <button class="l" data-d="L" aria-label="Left">◀</button>
-  <button class="d" data-d="D" aria-label="Down">▼</button>
-  <button class="r" data-d="R" aria-label="Right">▶</button>
+<div class="tools" role="group" aria-label="Choose a cracker">
+  <button data-t="rocket" aria-pressed="true">🚀 Rocket</button>
+  <button data-t="anar" aria-pressed="false">🌋 Anar</button>
+  <button data-t="chakra" aria-pressed="false">🌀 Chakra</button>
+  <button data-t="sparkler" aria-pressed="false">✨ Sparkler</button>
+  <button data-t="bomb" aria-pressed="false">💣 Bomb</button>
+</div>
+<div class="tools">
+  <button class="sec" id="auto" aria-pressed="false">Auto show</button>
+  <button class="sec" id="snd" aria-pressed="true">Sound on</button>
+  <button class="sec" id="share">Share my score</button>
 </div>
 
-<!-- 3) Below-game slot (never place ads on top of the play area) -->
 <div class="ad"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-XXXXXXXXXXXXXXXX" data-ad-slot="2222222222" data-ad-format="auto" data-full-width-responsive="true"></ins></div>
 
 <article>
   <h2>How to play</h2>
-  <p>Steer the eel around the pool and eat the golden pearls. Each pearl makes you longer and the current a little faster. Hit a wall or your own tail and the run is over. Your best score is saved on this device.</p>
+  <p>Choose a cracker, then tap the screen. Rockets whistle up to where you tap and burst into peonies, rings and golden willows. Anar fountains and chakra spinners sit on the ground where you place them. Hold your finger down with the sparkler selected to draw with light. Bombs have a short fuse, so watch the spark.</p>
+  <h2>Why a virtual Diwali?</h2>
+  <p>Real crackers add smoke and noise that is hard on people with asthma, babies, elders and pets. This simulator lets you enjoy the colour and sound of Diwali anywhere, any time of year.</p>
+  <h2>Questions</h2>
+  <p><b>Is it free?</b> Yes. It runs in your browser on phone, tablet and desktop, with nothing to install.<br><b>Does it work offline?</b> Once the page has loaded, the game runs without a connection.</p>
 </article>
-<footer>© Eel Run · <a href="/privacy.html">Privacy policy</a></footer>
+<footer>© Diwali Crackers Simulator · <a href="/privacy.html">Privacy policy</a></footer>
 
 <script>
 (()=>{
-const N=20,S=22,cv=document.getElementById('c'),x=cv.getContext('2d');
-const $=id=>document.getElementById(id);
-let snake,dir,next,pearl,score,speed,timer,state='idle';
-let best=0;try{best=+localStorage.getItem('eelBest')||0}catch(e){}
-$('best').textContent=best;
-const V={U:[0,-1],D:[0,1],L:[-1,0],R:[1,0]};
+const $=id=>document.getElementById(id),st=$('stage'),bg=$('bg'),fx=$('fx'),x=fx.getContext('2d');
+let W,H,G,tool='rocket',lit=0,AC,mute=false,spark=null,autoT=null;
+const P=[],R=[],A=[],C=[],B=[];
+const rnd=(a,b)=>a+Math.random()*(b-a),pick=a=>a[Math.floor(Math.random()*a.length)];
+const mk=(px,py,vx,vy,l,h,s,g,d,big)=>({x:px,y:py,vx,vy,l,m:l,h,s,g,d,big});
 
-function spawn(){
-  do{pearl=[Math.floor(Math.random()*N),Math.floor(Math.random()*N)]}
-  while(snake.some(s=>s[0]==pearl[0]&&s[1]==pearl[1]));
+function size(){
+  const r=st.getBoundingClientRect(),d=Math.min(devicePixelRatio||1,2);W=r.width;H=r.height;G=H-40;
+  [bg,fx].forEach(c=>{c.width=W*d;c.height=H*d;c.getContext('2d').setTransform(d,0,0,d,0,0)});
+  drawBg();
 }
-function reset(){
-  snake=[[10,10],[9,10],[8,10]];dir=next='R';score=0;speed=140;
-  $('score').textContent=0;spawn();
+function drawBg(){
+  const c=bg.getContext('2d');
+  const g=c.createLinearGradient(0,0,0,H);g.addColorStop(0,'#050816');g.addColorStop(.7,'#1a1740');g.addColorStop(1,'#3a1f4a');
+  c.fillStyle=g;c.fillRect(0,0,W,H);
+  let s=7;const r=()=>(s=(s*16807)%2147483647)/2147483647;
+  for(let i=0;i<90;i++){c.fillStyle=`rgba(255,255,255,${.2+r()*.6})`;c.fillRect(r()*W,r()*G*.8,r()<.1?2:1,r()<.1?2:1)}
+  c.fillStyle='#f3ecd2';c.beginPath();c.arc(W*.86,H*.16,16,0,7);c.fill();
+  let bx=-10;
+  while(bx<W){
+    const w=30+r()*50,h=40+r()*90;c.fillStyle='#0b0a1c';c.fillRect(bx,G-h,w,h+40);
+    for(let wy=G-h+8;wy<G-6;wy+=14)for(let wx=bx+6;wx<bx+w-8;wx+=12)if(r()<.35){c.fillStyle='rgba(255,190,90,.8)';c.fillRect(wx,wy,4,6)}
+    bx+=w+r()*6;
+  }
+  c.fillStyle='#0b0a1c';c.fillRect(0,G,W,H-G);
+  for(let dx=20;dx<W;dx+=46){
+    const rg=c.createRadialGradient(dx,G+14,1,dx,G+14,16);rg.addColorStop(0,'rgba(255,190,70,.9)');rg.addColorStop(1,'rgba(255,120,30,0)');
+    c.fillStyle=rg;c.fillRect(dx-16,G-2,32,32);c.fillStyle='#ffd27a';c.beginPath();c.arc(dx,G+13,2.2,0,7);c.fill();
+  }
 }
-function loop(){
-  clearTimeout(timer);
-  if(state!=='play')return;
-  step();draw();
-  timer=setTimeout(loop,speed);
+
+/* ---------- sound (synthesised, no files) ---------- */
+function au(){if(!AC)try{AC=new(window.AudioContext||window.webkitAudioContext)()}catch(e){}return AC}
+function noise(dur,f,vol,type){
+  const a=au();if(!a||mute)return;const n=a.sampleRate*dur,b=a.createBuffer(1,n,a.sampleRate),d=b.getChannelData(0);
+  for(let i=0;i<n;i++)d[i]=(Math.random()*2-1)*(1-i/n);
+  const s=a.createBufferSource();s.buffer=b;const fl=a.createBiquadFilter();fl.type=type||'lowpass';fl.frequency.value=f;
+  const g=a.createGain();g.gain.value=vol;s.connect(fl).connect(g).connect(a.destination);s.start();
 }
-function step(){
-  dir=next;
-  const h=[snake[0][0]+V[dir][0],snake[0][1]+V[dir][1]];
-  if(h[0]<0||h[1]<0||h[0]>=N||h[1]>=N||snake.some(s=>s[0]==h[0]&&s[1]==h[1]))return over();
-  snake.unshift(h);
-  if(h[0]==pearl[0]&&h[1]==pearl[1]){
-    score++;$('score').textContent=score;speed=Math.max(60,speed-4);spawn();
-  }else snake.pop();
+function tone(f0,f1,dur,vol){
+  const a=au();if(!a||mute)return;const o=a.createOscillator(),g=a.createGain(),t=a.currentTime;
+  o.frequency.setValueAtTime(f0,t);o.frequency.exponentialRampToValueAtTime(f1,t+dur);
+  g.gain.setValueAtTime(vol,t);g.gain.exponentialRampToValueAtTime(.001,t+dur);
+  o.connect(g).connect(a.destination);o.start();o.stop(t+dur+.05);
 }
-function turn(d){
-  const o={U:'D',D:'U',L:'R',R:'L'};
-  if(d!==o[dir])next=d;
+const bang=()=>{noise(.8,1100,.45);tone(140,35,.45,.6)};
+const boom=()=>{noise(1.1,600,.9);tone(120,28,.7,1)};
+const whistle=()=>tone(500,1700,.75,.05);
+
+/* ---------- effects ---------- */
+function burst(px,py){
+  const h=rnd(0,360),type=pick(['peony','ring','willow','dual']),n=type==='ring'?70:110;
+  for(let i=0;i<n;i++){
+    const a=type==='ring'?i/n*6.283:rnd(0,6.283),sp=type==='ring'?150:rnd(30,170),w=type==='willow';
+    P.push(mk(px,py,Math.cos(a)*sp,Math.sin(a)*sp,w?rnd(1.6,2.4):rnd(.9,1.5),w?42:(type==='dual'&&i%2?h+140:h),2,w?70:90,w?.975:.965));
+  }
+  P.push(mk(px,py,0,0,.2,45,26,0,1,true));bang();
 }
-function draw(){
-  x.fillStyle='#0b1f33';x.fillRect(0,0,440,440);
-  x.strokeStyle='rgba(143,176,196,.07)';
-  for(let i=1;i<N;i++){x.beginPath();x.moveTo(i*S,0);x.lineTo(i*S,440);x.moveTo(0,i*S);x.lineTo(440,i*S);x.stroke()}
-  x.fillStyle='#f6d776';x.beginPath();x.arc(pearl[0]*S+S/2,pearl[1]*S+S/2,S*.32,0,7);x.fill();
-  snake.forEach((s,i)=>{
-    x.fillStyle=i?`hsl(${172-i*2},55%,${58-Math.min(i,20)}%)`:'#8ff0e4';
-    const r=i?S*.42:S*.5;x.beginPath();x.arc(s[0]*S+S/2,s[1]*S+S/2,r,0,7);x.fill();
-  });
-  const h=snake[0];x.fillStyle='#0b1f33';
-  x.beginPath();x.arc(h[0]*S+S/2+V[dir][0]*3,h[1]*S+S/2+V[dir][1]*3,2.5,0,7);x.fill();
+function launch(tx,ty){
+  R.push({sx:tx+rnd(-30,30),sy:G,tx,ty:Math.min(ty,G-90),t:0,T:rnd(.8,1.1)});whistle();
 }
-function over(){
-  state='over';
-  if(score>best){best=score;$('best').textContent=best;try{localStorage.setItem('eelBest',best)}catch(e){}}
-  $('ovT').textContent='Game over';
-  $('ovP').textContent='You ate '+score+' pearl'+(score==1?'':'s')+'.';
-  $('go').textContent='Play again';
-  $('ov').classList.remove('hide');
+function use(px,py){
+  lit++;
+  if(tool==='rocket')launch(px,py);
+  else if(tool==='anar'){A.push({x:px,t:3.5});noise(3.5,3500,.05,'highpass')}
+  else if(tool==='chakra'){C.push({x:px,t:3.5,a:0});noise(3.5,3000,.05,'highpass')}
+  else if(tool==='bomb')B.push({x:px,t:.9});
+  $('lit').textContent=lit;
+  const rk=[[0,'Beginner'],[10,'Chhota Cracker'],[30,'Dhamaka Master'],[60,'Diwali Champion'],[100,'Patakha King']];
+  $('rank').textContent=rk.filter(r=>lit>=r[0]).pop()[1];
+  $('hint').style.display='none';
 }
-function start(){reset();state='play';$('ov').classList.add('hide');draw();loop()}
-function togglePause(){
-  if(state==='play'){state='pause';$('ovT').textContent='Paused';$('ovP').textContent='Take a breath.';$('go').textContent='Resume';$('ov').classList.remove('hide')}
-  else if(state==='pause'){state='play';$('ov').classList.add('hide');loop()}
+
+function frame(t0){
+  requestAnimationFrame(frame);
+  const dt=Math.min((t0-(frame.l||t0))/1000,.033);frame.l=t0;
+  x.globalCompositeOperation='destination-out';x.fillStyle='rgba(0,0,0,.2)';x.fillRect(0,0,W,H);
+  x.globalCompositeOperation='lighter';
+
+  for(let i=R.length-1;i>=0;i--){
+    const r=R[i];r.t+=dt;const p=Math.min(r.t/r.T,1),e=1-(1-p)*(1-p);
+    const px=r.sx+(r.tx-r.sx)*e,py=r.sy+(r.ty-r.sy)*e;
+    P.push(mk(px,py,rnd(-12,12),rnd(10,50),.45,35,1.6,60,.92));
+    if(p>=1){burst(px,py);R.splice(i,1)}
+  }
+  for(let i=A.length-1;i>=0;i--){
+    const a=A[i];a.t-=dt;
+    for(let k=0;k<5;k++)P.push(mk(a.x+rnd(-3,3),G,rnd(-55,55),-rnd(200,340),rnd(.7,1.1),rnd(30,50),1.7,420,.99));
+    if(a.t<=0)A.splice(i,1);
+  }
+  for(let i=C.length-1;i>=0;i--){
+    const c=C[i];c.t-=dt;c.a+=dt*(10+c.t*3);
+    for(let k=0;k<3;k++){const an=c.a+k*2.094;P.push(mk(c.x,G-10,Math.cos(an)*170,Math.sin(an)*170,.5,(c.a*40)%360,1.7,40,.95))}
+    if(c.t<=0){C.splice(i,1)}
+  }
+  for(let i=B.length-1;i>=0;i--){
+    const b=B[i];b.t-=dt;P.push(mk(b.x+rnd(-1,1),G-6,rnd(-20,20),-rnd(20,60),.25,35,2,0,.9));
+    if(b.t<=0){
+      for(let k=0;k<70;k++){const a=rnd(0,6.283),s=rnd(40,260);P.push(mk(b.x,G-6,Math.cos(a)*s,Math.sin(a)*s-60,rnd(.4,.9),rnd(15,50),2.2,300,.94))}
+      P.push(mk(b.x,G-6,0,0,.25,40,60,0,1,true));boom();
+      st.animate([{transform:'translate(0,0)'},{transform:'translate(-6px,4px)'},{transform:'translate(5px,-3px)'},{transform:'translate(0,0)'}],{duration:280});
+      B.splice(i,1);
+    }
+  }
+  if(spark)for(let k=0;k<7;k++){const a=rnd(0,6.283),s=rnd(20,120);P.push(mk(spark.x,spark.y,Math.cos(a)*s,Math.sin(a)*s,rnd(.2,.45),rnd(38,55),1.4,140,.9))}
+
+  for(let i=P.length-1;i>=0;i--){
+    const p=P[i];p.l-=dt;if(p.l<=0){P.splice(i,1);continue}
+    p.vy+=p.g*dt;const dr=Math.pow(p.d,dt*60);p.vx*=dr;p.vy*=dr;p.x+=p.vx*dt;p.y+=p.vy*dt;
+    const a=p.l/p.m;x.fillStyle=`hsla(${p.h},100%,${p.big?78:62}%,${p.big?a*.55:a})`;
+    x.beginPath();x.arc(p.x,p.y,p.s*(.4+.6*a),0,7);x.fill();
+  }
 }
-$('go').onclick=()=>state==='pause'?togglePause():start();
-$('pause').onclick=togglePause;
-document.querySelectorAll('.pad button').forEach(b=>b.onclick=()=>turn(b.dataset.d));
-addEventListener('keydown',e=>{
-  const m={ArrowUp:'U',w:'U',ArrowDown:'D',s:'D',ArrowLeft:'L',a:'L',ArrowRight:'R',d:'R'}[e.key];
-  if(m){e.preventDefault();turn(m)}
-  else if(e.key===' '){e.preventDefault();state==='play'||state==='pause'?togglePause():start()}
+
+/* ---------- input ---------- */
+function pos(e){const r=st.getBoundingClientRect();return{x:e.clientX-r.left,y:e.clientY-r.top}}
+st.addEventListener('pointerdown',e=>{
+  au()&&AC.resume&&AC.resume();const p=pos(e);
+  if(tool==='sparkler'){spark=p;st.setPointerCapture(e.pointerId);lit++;$('lit').textContent=lit;$('hint').style.display='none'}
+  else use(tool==='rocket'?p.x:p.x,p.y);
 });
-let t0;
-cv.addEventListener('touchstart',e=>{t0=e.touches[0]},{passive:true});
-cv.addEventListener('touchend',e=>{
-  if(!t0)return;const t=e.changedTouches[0],dx=t.clientX-t0.clientX,dy=t.clientY-t0.clientY;
-  if(Math.max(Math.abs(dx),Math.abs(dy))<20)return;
-  turn(Math.abs(dx)>Math.abs(dy)?(dx>0?'R':'L'):(dy>0?'D':'U'));
+st.addEventListener('pointermove',e=>{if(spark)spark=pos(e)});
+['pointerup','pointercancel'].forEach(n=>st.addEventListener(n,()=>spark=null));
+document.querySelectorAll('[data-t]').forEach(b=>b.onclick=()=>{
+  tool=b.dataset.t;document.querySelectorAll('[data-t]').forEach(o=>o.setAttribute('aria-pressed',o===b));
 });
-reset();draw();
-// Load ads (safe if AdSense hasn't approved the site yet)
+$('snd').onclick=e=>{mute=!mute;e.target.textContent=mute?'Sound off':'Sound on';e.target.setAttribute('aria-pressed',!mute)};
+$('auto').onclick=e=>{
+  if(autoT){clearInterval(autoT);autoT=null;e.target.setAttribute('aria-pressed',false);return}
+  e.target.setAttribute('aria-pressed',true);au()&&AC.resume&&AC.resume();$('hint').style.display='none';
+  autoT=setInterval(()=>launch(rnd(W*.1,W*.9),rnd(H*.1,H*.5)),420);
+};
+$('share').onclick=async()=>{
+  const text=`I lit ${lit} crackers in the Diwali Crackers Simulator. Beat my score!`;
+  try{if(navigator.share)await navigator.share({title:document.title,text,url:location.href});
+  else{await navigator.clipboard.writeText(text+' '+location.href);$('share').textContent='Link copied'}}catch(e){}
+};
+addEventListener('resize',size);size();requestAnimationFrame(frame);
 document.querySelectorAll('.adsbygoogle').forEach(()=>{try{(adsbygoogle=window.adsbygoogle||[]).push({})}catch(e){}});
 })();
 </script>
