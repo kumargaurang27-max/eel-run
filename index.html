@@ -114,7 +114,7 @@ const MP=[
  {n:'Arctic Dawn',sky:[[.98,.78,.82],[.55,.7,.95],[.22,.42,.8]],sd:[.5,.1,.86],fog:[0xcfdcf0,.0034],gnd:'#e6eef7',sun:[0xfff0e0,2.2],hemi:[0xdfeaff,0x8a9bb8,.85],exp:1,prop:'pine',snow:1,mt:[.6,.25,.7]},
  {n:'Salt Flats',sky:[[.85,.9,1],[.45,.7,1],[.1,.35,.85]],sd:[-.3,.35,.89],fog:[0xdfe9f5,.0016],gnd:'#efe9df',sun:[0xffffff,3],hemi:[0xffffff,0xb8c4d6,.7],exp:.95,prop:'salt',mt:[.6,.2,.62]}];
 let stars=[];try{stars=JSON.parse(localStorage.getItem('hcStars'))||[]}catch(e){}
-function reset(){s={ph:'ready',t:0,x:0,v:0,a:0,kw:0,thr:0,spin:0,boost:1.5,boostOn:false,boostUsed:false,rt:null,t100:null,t200:null,keys:false,fs:false,grip:.7}}
+function reset(){s={ph:'ready',t:0,x:0,v:0,a:0,kw:0,thr:0,spin:0,boost:1.5,boostOn:false,boostUsed:false,rt:null,t100:null,t200:null,keys:false,fs:false,grip:.7,n:0,log:[],pk:false,boostReq:false,tc:true}}
 reset();
 
 /* ---------- renderer, sky, lights ---------- */
@@ -214,15 +214,17 @@ function sound(){if(au)return;try{au=new(window.AudioContext||window.webkitAudio
 
 /* ---------- physics (SI units) ---------- */
 function phys(dt){
+  if(s.keys!==s.pk){s.pk=s.keys;s.log.push([s.n,s.keys?1:0])}
+  if(s.boostReq&&!s.boostUsed){s.boostReq=false;s.boostUsed=true;s.boostOn=true;s.log.push([s.n,2])}
   s.thr=Math.min(1,Math.max(0,s.thr+(s.keys?3:-6)*dt));
   const v=s.v,q=.5*1.2*v*v,qa=.5*1.2*(v+WIND)*(v+WIND),fm=Math.min(FMAX,PMAX/Math.max(v,1)),ft=MU*(M*G+q*AF*CL);let want=s.thr*fm,F;
-  if(tcOn&&want>ft*.97)want=ft*.97;
+  if(s.tc&&want>ft*.97)want=ft*.97;
   if(want>ft){F=ft*.8;s.spin=Math.min(1,s.spin+dt*4)}else{F=want;s.spin=Math.max(0,s.spin-dt*5)}
   if(s.boostOn){F+=15e3;s.boost-=dt;if(s.boost<=0)s.boostOn=false}
   s.kw=F*v/1000;F-=qa*CD*AF+(v>0?CRR*M*G:0);
   const nv=Math.max(0,v+F/M*dt);s.a=(nv-v)/dt;s.v=nv;s.x+=nv*dt;s.t+=dt;
   if(s.rt===null&&s.thr>.05)s.rt=s.t;if(s.t100===null&&nv>=27.78)s.t100=s.t;if(s.t200===null&&nv>=55.56)s.t200=s.t;
-  s.grip=Math.min(1,ft/fm);
+  s.grip=Math.min(1,ft/fm);s.n++;
 }
 
 /* ---------- levels, menu, run flow ---------- */
@@ -240,7 +242,7 @@ function selectLevel(i){
   reset();buildMap(l.m);renderMenu();brief();$('lbh').textContent='Global leaderboard – level '+(i+1);load();
 }
 function start(){
-  reset();s.ph='stage';$('msg').classList.add('hide');$('res').style.display='none';sound();au&&au.resume&&au.resume();
+  reset();s.tc=tcOn;s.ph='stage';$('msg').classList.add('hide');$('res').style.display='none';sound();au&&au.resume&&au.resume();
   const Ls=[...document.querySelectorAll('#lights i')];Ls.forEach(l=>l.className='');
   [0,1,2].forEach(i=>setTimeout(()=>{if(s.ph==='stage')Ls[i].className='on'},i*700));
   setTimeout(()=>{if(s.ph==='stage'){Ls.forEach(l=>l.className='go');s.ph='run';s.t=0}},2100+Math.random()*900);
@@ -289,9 +291,9 @@ new ResizeObserver(size).observe(game);size();
 addEventListener('keydown',e=>{if(e.code==='Space'||e.code==='ArrowUp'){if(e.target.tagName==='INPUT')return;e.preventDefault();if(s.ph==='stage'||s.ph==='run')s.keys=true}if(e.code==='KeyB')boost()});
 addEventListener('keyup',e=>{if(e.code==='Space'||e.code==='ArrowUp')s.keys=false});
 const hd=$('hold');hd.addEventListener('pointerdown',e=>{e.preventDefault();s.keys=true});['pointerup','pointerleave','pointercancel'].forEach(n=>hd.addEventListener(n,()=>s.keys=false));
-function boost(){if(s.ph==='run'&&!s.boostUsed){s.boostUsed=true;s.boostOn=true}}
+function boost(){if(s.ph==='run'&&!s.boostUsed)s.boostReq=true}
 $('bst').onclick=boost;$('go').onclick=start;$('nx').onclick=()=>selectLevel(lv+1);
-$('tc').onclick=e=>{if(!tcOk)return;tcOn=!tcOn;e.target.setAttribute('aria-pressed',tcOn);e.target.textContent='TC '+(tcOn?'on':'off')};
+$('tc').onclick=e=>{if(!tcOk||s.ph==='stage'||s.ph==='run')return;tcOn=!tcOn;e.target.setAttribute('aria-pressed',tcOn);e.target.textContent='TC '+(tcOn?'on':'off')};
 $('fs').onclick=()=>{const d=document;if(d.fullscreenElement||d.webkitFullscreenElement){(d.exitFullscreen||d.webkitExitFullscreen).call(d)}else{(game.requestFullscreen||game.webkitRequestFullscreen||(()=>{})).call(game)}};
 const COL=[['Pearl',0xe9edf2],['Racing red',0xc4101a],['Midnight blue',0x163a8a],['Solar yellow',0xf2b705],['Graphite',0x3a3f48]];
 let col=+(localStorage.getItem('hcCol')||0);
@@ -304,8 +306,10 @@ async function load(){
   catch(e){$('lb').innerHTML='<li>Leaderboard offline.</li>'}
 }
 $('sub').onclick=async()=>{
-  const name=$('nm').value.trim()||'Driver';$('sub').disabled=true;
-  try{await fetch('/api/scores',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({lvl:lv+1,name,et:+s.et.toFixed(3),trap:+s.trap.toFixed(1),tc:tcOn})});$('sub').textContent='Submitted'}catch(e){$('sub').textContent='Try again';$('sub').disabled=false}
+  const name=$('nm').value.trim()||'Driver';$('sub').disabled=true;$('sub').textContent='Verifying…';
+  try{const r=await fetch('/api/scores',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({lvl:lv+1,name,tc:s.tc,log:s.log})});const d=await r.json();
+    $('sub').textContent=d.error?('Rejected: '+d.error):`Verified ${d.et.toFixed(2)} s`+(d.rank?` · rank #${d.rank}`:'');if(d.error)$('sub').disabled=false}
+  catch(e){$('sub').textContent='Try again';$('sub').disabled=false}
   load();
 };
 {let i=0;while(i<L.length-1&&unlocked(i+1))i++;selectLevel(i)}
