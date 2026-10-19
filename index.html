@@ -100,6 +100,7 @@ footer{padding:20px;text-align:center;color:var(--mute);font-size:.85rem}footer 
 <footer>Independent fan-made simulation, not affiliated with any car maker. · <a href="/privacy.html">Privacy policy</a></footer>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
 <script>
 (()=>{
 const $=id=>document.getElementById(id),game=$('game');
@@ -202,6 +203,20 @@ const wheels=[],tyreM=new T.MeshStandardMaterial({color:0x08090b,roughness:.9}),
 const flameG=new T.ConeGeometry(.22,3,16,1,true);flameG.rotateX(-Math.PI/2);flameG.translate(0,0,-1.5);
 const flame=new T.Mesh(flameG,new T.MeshBasicMaterial({color:0x9fe0ff,transparent:true,opacity:.9,blending:T.AdditiveBlending,depthWrite:false}));flame.position.set(0,.5,-2.55);flame.visible=false;
 const fl=new T.PointLight(0x9fe0ff,0,16);fl.position.set(0,.6,-3.3);car.add(flame,fl,new T.Mesh(new T.CylinderGeometry(.13,.16,.2,16).rotateX(Math.PI/2),dark).translateZ(-2.5).translateY(.5));
+
+/* ---------- optional real car model: put car.glb next to index.html ---------- */
+if(T.GLTFLoader)new T.GLTFLoader().load('car.glb',g=>{
+  const m=g.scene,V=()=>new T.Vector3();
+  let b=new T.Box3().setFromObject(m),z=b.getSize(V());
+  if(z.x>z.z)m.rotation.y=Math.PI/2;                       // make the long axis point along the road
+  if(/[?&]flip/.test(location.search))m.rotation.y+=Math.PI; // add ?flip to the URL if the car faces backwards
+  m.updateMatrixWorld(true);b=new T.Box3().setFromObject(m);z=b.getSize(V());
+  m.scale.setScalar(4.7/Math.max(z.x,z.z));m.updateMatrixWorld(true);
+  b=new T.Box3().setFromObject(m);const c=b.getCenter(V());m.position.set(-c.x,-b.min.y,-c.z); // centre it and sit it on the road
+  m.traverse(o=>{if(o.isMesh){o.castShadow=true;if(o.material&&'envMapIntensity'in o.material)o.material.envMapIntensity=1.6}});
+  body.visible=false;wheels.forEach(w=>w.visible=false);car.children.forEach(o=>{if(o.isMesh&&o.material===redM)o.visible=false});
+  car.add(m);
+},undefined,()=>{});
 
 /* ---------- particles & audio ---------- */
 const smokeTex=glowTex('rgba(225,225,235,.8)'),smoke=[];let sp=0;
